@@ -26,7 +26,7 @@ contract Domains is ERC721URIStorage {
 
   constructor(string memory _tld) payable ERC721("God Name Service", "GNS") {
     tld = _tld;
-    console.log("%s name service deployed", _tld);
+    console.log("God Name Service Deployed");
   }
 
   function register(string calldata name) public payable {
