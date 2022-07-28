@@ -43,15 +43,10 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
-        // You know all this
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
-
-        // Get all the domain names from our contract
         const names = await contract.getAllNames();
-
-        // For each name, get the record and the address
         const mintRecords = await Promise.all(
           names.map(async (name) => {
             const mintRecord = await contract.records(name);
@@ -101,11 +96,9 @@ const App = () => {
   };
 
   const mintDomain = async () => {
-    // Don't run if the domain is empty
     if (!domain) {
       return;
     }
-    // Alert the user if the domain is too short
     if (domain.length < 3) {
       alert("Domain must be at least 3 characters long");
       return;
@@ -123,20 +116,15 @@ const App = () => {
 
         console.log("Going to pop wallet now to pay gas...");
         let tx = await contract.register(domain, { value: ethers.utils.parseEther(price) });
-        // Wait for the transaction to be mined
-        const receipt = await tx.wait();
 
-        // Check if the transaction was successfully completed
+        const receipt = await tx.wait();
         if (receipt.status === 1) {
           console.log("Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash);
-
-          // Set the record for the domain
           tx = await contract.setRecord(domain, record);
           await tx.wait();
 
           console.log("Record set! https://mumbai.polygonscan.com/tx/" + tx.hash);
 
-          // Call fetchMints after 2 seconds
           setTimeout(() => {
             fetchMints();
           }, 2000);
@@ -177,7 +165,6 @@ const App = () => {
 
     ethereum.on("chainChanged", handleChainChanged);
 
-    // Reload the page when they change networks
     function handleChainChanged(_chainId) {
       window.location.reload();
     }
@@ -189,7 +176,6 @@ const App = () => {
     setDomain(name);
   };
 
-  // Render methods
   const renderMints = () => {
     if (currentAccount && mints.length > 0) {
       return (
@@ -234,7 +220,7 @@ const App = () => {
 
   const renderNotConnectedContainer = () => (
     <div className="connect-wallet-container">
-      <img src="https://media.giphy.com/media/3ohhwytHcusSCXXOUg/giphy.gif" alt="Ninja donut gif" />
+      {/* <img src="https://media.giphy.com/media/3ohhwytHcusSCXXOUg/giphy.gif" alt="Ninja donut gif" /> */}
       {/* Call the connectWallet function we just wrote when the button is clicked */}
       <button onClick={connectWallet} className="cta-button connect-wallet-button">
         Connect Wallet
