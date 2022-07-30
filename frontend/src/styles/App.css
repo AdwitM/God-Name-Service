@@ -12,6 +12,9 @@ p {
 .container {
   height: 100%;
   background-color: #181818;
+  background-image:url("https://w.wallhaven.cc/full/lm/wallhaven-lm638p.jpg");
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
